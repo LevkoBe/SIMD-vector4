@@ -81,6 +81,13 @@ public:
 		return arr[0] + arr[1] + arr[2] + arr[3];
 	}
 
+	float magnitude() const {
+		return std::sqrt(dot(*this));
+	}
+	float magnitude_squared() const {
+		return dot(*this);
+	}
+
 	static friend std::ostream& operator<<(std::ostream& os, const vector4& v) {
 		os << "(" << v.x() << ", " << v.y() << ", " << v.z() << ", " << v.w() << ")";
 		return os;
@@ -117,6 +124,11 @@ static void test_vector4_dot(vector4& v1, vector4& v2) {
 	std::cout << "(1.0, 2.0, 3.0) . v2: " << v2.dot(1.0f, 2.0f, 3.0f) << "\n\n";
 }
 
+static void test_vector4_magnitude(vector4& v1) {
+	std::cout << "v1 magnitude: " << v1.magnitude() << std::endl;
+	std::cout << "v1 magnitude squared: " << v1.magnitude_squared() << "\n\n";
+}
+
 int main()
 {
 
@@ -129,6 +141,7 @@ int main()
 	test_vector4_add_sub(v1, v2);
 	test_vector4_mul_div(v1, v2);
 	test_vector4_dot(v1, v2);
+	test_vector4_magnitude(v1);
 
 	return 0;
 }
