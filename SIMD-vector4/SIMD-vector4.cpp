@@ -88,6 +88,12 @@ public:
 		return dot(*this);
 	}
 
+	vector4& normalize() {
+		float mag = magnitude();
+		if (mag != 0.0f) v = _mm_div_ps(v, _mm_set_ps1(mag));
+		return *this;
+	}
+
 	static friend std::ostream& operator<<(std::ostream& os, const vector4& v) {
 		os << "(" << v.x() << ", " << v.y() << ", " << v.z() << ", " << v.w() << ")";
 		return os;
@@ -129,6 +135,13 @@ static void test_vector4_magnitude(vector4& v1) {
 	std::cout << "v1 magnitude squared: " << v1.magnitude_squared() << "\n\n";
 }
 
+static void test_vector4_normalize(vector4& v1) {
+	v1.normalize();
+	std::cout << "v1 normalized: " << v1 << std::endl;
+	std::cout << "v1 magnitude: " << v1.magnitude() << std::endl;
+	std::cout << "v1 magnitude squared: " << v1.magnitude_squared() << "\n\n";
+}
+
 int main()
 {
 
@@ -142,6 +155,7 @@ int main()
 	test_vector4_mul_div(v1, v2);
 	test_vector4_dot(v1, v2);
 	test_vector4_magnitude(v1);
+	test_vector4_normalize(v1);
 
 	return 0;
 }
