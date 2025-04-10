@@ -45,20 +45,35 @@ public:
 		return *this;
 	}
 
+	vector4& mul(float scale) {
+		__m128 tht = _mm_set_ps1(scale);
+		v = _mm_mul_ps(v, tht);
+		return *this;
+	}
+	vector4& mul(float scale, float w_scale) {
+		__m128 tht = _mm_set_ps(w_scale, scale, scale, scale);
+		v = _mm_mul_ps(v, tht);
+		return *this;
+	}
+
+	vector4& div(float scale) {
+		__m128 tht = _mm_set_ps1(scale);
+		v = _mm_div_ps(v, tht);
+		return *this;
+	}
+	vector4& div(float scale, float w_scale) {
+		__m128 tht = _mm_set_ps(w_scale, scale, scale, scale);
+		v = _mm_div_ps(v, tht);
+		return *this;
+	}
+
 	static friend std::ostream& operator<<(std::ostream& os, const vector4& v) {
 		os << "(" << v.x() << ", " << v.y() << ", " << v.z() << ", " << v.w() << ")";
 		return os;
 	}
 };
 
-int main()
-{
-	vector4 v1(1.0f, 2.0f, 3.0f, 0.0f);
-	vector4 v2(5.0f, 6.0f, 7.0f, 0.0f);
-
-	std::cout << "v1: " << v1 << std::endl;
-	std::cout << "v2: " << v2 << std::endl;
-
+static void test_vector4_add_sub(vector4& v1, vector4& v2) {
 	v1.add(v2);
 	std::cout << "v1 += v2: " << v1 << std::endl;
 	v1.sub(v2);
@@ -68,7 +83,31 @@ int main()
 	v1.sub(1.0f, 2.0f, 3.0f);
 	std::cout << "v1 -= (1.0, 2.0, 3.0): " << v1 << std::endl;
 	v1.sub(v2);
-	std::cout << "v1 -= v2: " << v1 << std::endl;
+	std::cout << "v1 -= v2: " << v1 << "\n\n";
+}
+
+static void test_vector4_mul_div(vector4& v1, vector4& v2) {
+	v1.mul(2.0f);
+	std::cout << "v1 *= 2.0: " << v1 << std::endl;
+	v1.div(2.0f);
+	std::cout << "v1 /= 2.0: " << v1 << std::endl;
+	v1.mul(2.0f, 3.0f);
+	std::cout << "v1 *= (2.0, 3.0): " << v1 << std::endl;
+	v1.div(2.0f, 3.0f);
+	std::cout << "v1 /= (2.0, 3.0): " << v1 << "\n\n";
+}
+
+int main()
+{
+
+	vector4 v1(1.0f, 2.0f, 3.0f, 0.0f);
+	vector4 v2(5.0f, 6.0f, 7.0f, 0.0f);
+
+	std::cout << "v1: " << v1 << std::endl;
+	std::cout << "v2: " << v2 << "\n\n";
+
+	test_vector4_add_sub(v1, v2);
+	test_vector4_mul_div(v1, v2);
 
 	return 0;
 }
